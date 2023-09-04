@@ -1,6 +1,7 @@
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+require('dotenv').config();
 const port = process.env.PORT || 3000;
 const msgs = [];
 app.get('/', (req, res) => {
@@ -21,6 +22,17 @@ io.on('connection', (socket) => {
   });
 });
 
-http.listen(port, () => {
-  console.log(`Socket.IO server running at http://localhost:${port}/`);
-});
+// http.listen(port, () => {
+//   console.log(`Socket.IO server running at http://localhost:${port}/`);
+// });
+
+if(process.env.DEV === 'true')
+{
+  http.listen(3000, () => 
+    console.log(`Server is listening on port ${process.env.PORT}.${process.env.DEV} `)
+    
+  );
+}
+else{
+  exports.handler = serverless(app);
+}
