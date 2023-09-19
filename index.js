@@ -10,6 +10,15 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+  socket.on('subscribe_rides',m=> {
+    console.log("message: ",m);
+    const obj = JSON.parse(m);
+    const ride_id = obj.ride_id;
+    console.log("user subscribing for rides with id ",ride_id)
+    socket.on('rides_'+ride_id, m2=>{
+        socket.emit('rides_'+ride_id, m2);
+    });
+  });
   socket.on('chat message', m => {
     msgs.push(m);
     const { data, token } = m;
@@ -26,13 +35,7 @@ io.on('connection', (socket) => {
 //   console.log(`Socket.IO server running at http://localhost:${port}/`);
 // });
 
-if(process.env.DEV === 'true')
-{
-  http.listen(3000, () => 
-    console.log(`Server is listening on port ${process.env.PORT}.${process.env.DEV} `)
+http.listen(3000, () => 
+   console.log(`Server is listening on port ${process.env.PORT}.${process.env.DEV} `)
     
-  );
-}
-else{
-  exports.handler = serverless(app);
-}
+ );
