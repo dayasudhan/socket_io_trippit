@@ -16,7 +16,7 @@ io.on('connection', (socket) => {
     const ride_id = obj.ride_id;
     console.log("user subscribing for rides with id ",ride_id)
     socket.on('rides_'+ride_id, m2=>{
-        socket.emit('rides_'+ride_id, m2);
+        socket.broadcast.emit('rides_'+ride_id, m2);
     });
   });
   socket.on('chat message', m => {
