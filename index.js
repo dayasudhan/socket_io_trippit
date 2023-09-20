@@ -7,7 +7,7 @@ const msgs = [];
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
-
+app.get('/test', (req, res) => res.send('Namaste Dayasudhan ??'));
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('chat message', m => {
