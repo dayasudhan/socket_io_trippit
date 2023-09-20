@@ -9,13 +9,14 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log('a user connected ',socket.id);
   socket.on('subscribe_rides',m=> {
     console.log("message: ",m);
     const obj = JSON.parse(m);
     const ride_id = obj.ride_id;
-    console.log("user subscribing for rides with id ",ride_id)
+    console.log(socket.id+" user subscribing for rides with id ",ride_id)
     socket.on('rides_'+ride_id, m2=>{
+        console.log(socket.id+" received from topic rides_"+ride_id+" data- ",m2);
         socket.broadcast.emit('rides_'+ride_id, m2);
     });
   });
@@ -35,7 +36,7 @@ io.on('connection', (socket) => {
 //   console.log(`Socket.IO server running at http://localhost:${port}/`);
 // });
 
-http.listen(3000, () => 
+http.listen(3000, () =>
    console.log(`Server is listening on port ${process.env.PORT}.${process.env.DEV} `)
-    
+
  );
