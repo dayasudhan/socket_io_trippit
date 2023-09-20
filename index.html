@@ -18,11 +18,13 @@
   <body>
     <ul id="messages"></ul>
     <form id="form" action="">
-      <h2>Messages</h2>
-      <input id="input" autocomplete="off" name="MyMessage"/>
-      <h2>Your Name</h2>
-      <input id="token" autocomplete="off" name="MyName"/>
-      <button>Send</button>
+      <h2>Latitude</h2>
+      <input id="lat" autocomplete="off" name="Latitude"/>
+      <h2>Longitude</h2>
+      <input id="lng" autocomplete="off" name="Longitude"/>
+      <h2>Altitude</h2>
+      <input id="alt" autocomplete="off" name="Altitude"/>
+      <button type="submit">Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
 
@@ -31,16 +33,38 @@
 
       var messages = document.getElementById('messages');
       var form = document.getElementById('form');
-      var input = document.getElementById('input');
+      var lat = document.getElementById('lat');
+      var lng = document.getElementById('lng');
+      var alt = document.getElementById('alt');
 
       form.addEventListener('submit', function(e) {
+        console.log("form submit");
         e.preventDefault();
-        if (input.value) {
-          socket.emit('chat message', {"data":input.value, "token":token.value});
-          input.value = '';
-        }
+        console.log("subscribing to ride : ride_1");
+        socket.emit('subscribe_rides',{"ride_id","ride_1"});
+        var currentdate = new Date(); 
+        var data = {
+            'userId': 'gagan_id',
+            'userName': 'gagan',
+            'phoneNumber': '9482718488',
+            'email': 'gagan@gmail.com',
+            'photoURL': 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+            'latitude': lat,
+            'longitude': lng,
+            'altitude': alt,
+            'time': 'time',
+          };
+        socket.emit('rides_ride_1',data);
+        console.log("sending to : ride_1 "+data);
+
       });
 
+      
+     socket.on('rides_ride_1',function(msg){
+            console.log('received msg')
+            console.log(msg)
+        })
+        
       socket.on('chat message', function(msg) {
         var item = document.createElement('li');
         console.log(msg)
