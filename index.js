@@ -2,7 +2,7 @@ const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 require('dotenv').config();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 const msgs = [];
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -32,11 +32,8 @@ io.on('connection', (socket) => {
   });
 });
 
-// http.listen(port, () => {
-//   console.log(`Socket.IO server running at http://localhost:${port}/`);
-// });
 
-http.listen(3000, () =>
+http.listen(port, () =>
    console.log(`Server is listening on port ${process.env.PORT}.${process.env.DEV} `)
 
  );
